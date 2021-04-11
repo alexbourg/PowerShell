@@ -1,20 +1,21 @@
-Set-ExecutionPolicy Unrestricted
-
+$cleanpython = $false
 
 # Custom function to clean python & anaconda variables
-$allenv = (Get-ChildItem -Path Env:).name
-foreach ($item in $allenv)
+if ($cleanpython)
 {
-    if ($item -like "*Python*" -Or $item -like "*Anaconda*")
+    $allenv = (Get-ChildItem -Path Env:).name
+    foreach ($item in $allenv)
     {
-        $item
-        [Environment]::SetEnvironmentVariable($item,$null,"Machine")
-        [Environment]::SetEnvironmentVariable($item,$null,"User")
-        Write-Output '*****************************'
-        Write-Output ''
+        if ($item -like "*Python*" -Or $item -like "*Anaconda*")
+        {
+            $item
+            [Environment]::SetEnvironmentVariable($item, $null, "Machine")
+            [Environment]::SetEnvironmentVariable($item, $null, "User")
+            Write-Output '*****************************'
+            Write-Output ''
+        }
     }
 }
-
 
 # Custom function to clean python & anaconda from the "Path" variable
 $profiles = ("User", "Machine")
@@ -27,16 +28,25 @@ foreach ($profile in $profiles)
     $new_env = New-Object System.Collections.ArrayList
     $profilex = $profile.Trim('"')
 
+
     foreach ($item in $old_env)
     {
-        if ($item -like "*Python*" -Or $item -like "*Anaconda*")
+        if ($cleanpython)
         {
-#            $new_env = $new_env + $item
+            if ($item -like "*Python*" -Or $item -like "*Anaconda*")
+            {
+                #            $new_env = $new_env + $item
+            }
+            else
+            {
+                $new_env = $new_env + $item
+            }
         }
         else{
             $new_env = $new_env + $item
         }
     }
+
 
     if ($new_env.count -eq $old_env.Count){
         $profile
@@ -61,5 +71,3 @@ foreach ($profile in $profiles)
         Write-Output ''
     }
 }
-
-Set-ExecutionPolicy Restricted
