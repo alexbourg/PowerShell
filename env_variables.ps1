@@ -1,4 +1,4 @@
-$cleanpython = $false
+$cleanpython = $true
 
 # Custom function to clean python & anaconda variables
 if ($cleanpython) {
