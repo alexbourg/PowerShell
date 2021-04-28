@@ -11,3 +11,6 @@ Run Clean_Python_Anaconda.bat
 
 ### To remove duplicate variables:
 Run Remove_Duplicates_Only.bat
+
+
+https://www.techthoughts.info/powershell-errors-and-exceptions-handling/
