@@ -14,3 +14,7 @@ Run Remove_Duplicates_Only.bat
 
 
 https://www.techthoughts.info/powershell-errors-and-exceptions-handling/
+
+
+
+Invoke-WebRequest https://codeload.github.com/alexbourg/test/zip/refs/heads/main -Proxy ([System.Net.WebRequest]::GetSystemWebproxy()).GetProxy('https://codeload.github.com/alexbourg/test/zip/refs/heads/main') -ProxyUseDefaultCredentials -OutFile C:\Program64\Python\temp\Python_LocalPIP.zip
