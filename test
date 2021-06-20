@@ -1,0 +1,19 @@
+if (-Not (Test-Path "C:\Program64\Atom\atom.exe")) {
+    $userprofilespath = -join ("C:\", $env:USERPROFILE.Split('\')[1])
+    $userprofiles = Get-ChildItem $userprofilespath
+    foreach ($profile in $userprofiles) {
+        $FileFolderPath = -join ($userprofilespath, '\', $profile.Name)
+        if (-not($FileFolderPath -like "*admin*" -or $FileFolderPath -like "*Default*" -or $FileFolderPath -like "*public*" -or $FileFolderPath -like "*_A*" -or $FileFolderPath -like "*SVC_DESKDEPLOY*" -or $FileFolderPath -like "*ctx_cpsvcuser*")) {
+            Remove-Item -Recurse -Force $FileFolderPath\.atom
+						Remove-Item -Recurse -Force $FileFolderPath\AppData\Roaming\Atom
+						Remove-Item -Recurse -Force $FileFolderPath\Desktop\Apps\Atom.lnk
+						$tdc = "C:\Users\usr64\Desktop"
+						$dirs = gci $tdc -directory -recurse | Where { (gci $_.fullName).count -eq 0 } | select -expandproperty FullName
+						$dirs | Foreach-Object { Remove-Item $_ }
+						$user = $profile.Name
+						reg load "HKLM\$user" "$FileFolderPath\NTUSER.DAT"
+						reg delete "HKLM\$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\atom" /f
+						reg unload "HKLM\$user"
+        }
+    }
+}
